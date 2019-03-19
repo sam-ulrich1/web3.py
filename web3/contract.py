@@ -1360,8 +1360,12 @@ def call_contract_function(
 
     if block_id is None:
         return_data = web3.eth.call(call_transaction)
+        while return_data == bytes("".encode()):
+            return_data = web3.eth.call(call_transaction)
     else:
         return_data = web3.eth.call(call_transaction, block_identifier=block_id)
+        while return_data == bytes("".encode()):
+            return_data = web3.eth.call(call_transaction, block_identifier=block_id)
 
     if fn_abi is None:
         fn_abi = find_matching_fn_abi(contract_abi, function_identifier, args, kwargs)
